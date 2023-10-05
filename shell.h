@@ -8,12 +8,16 @@
 /**
  * struct env_s - linked list containing environment variables
  * @str: string holding a variable
+ * @name: env variable name
+ * @value: env variable value
  * @next: pointer to next node
  */
 
 typedef struct env_s
 {
 	char *str;
+	char *name;
+	char *value;
 	struct env_s *next;
 } env_t;
 

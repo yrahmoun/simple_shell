@@ -25,7 +25,6 @@ int main(int ac, char **av, char **envp)
 		n = getline(&input, &len, stdin);
 		if (n == (size_t)-1)
 		{
-			perror("");
 			free_list_env(p);
 			exit(0);
 		}

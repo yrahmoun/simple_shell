@@ -12,6 +12,8 @@ void free_list_env(env_t *head)
 	while (head)
 	{
 		aux = head->next;
+		free(head->name);
+		free(head->value);
 		free(head->str);
 		free(head);
 		head = aux;
