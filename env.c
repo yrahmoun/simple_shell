@@ -15,21 +15,9 @@ char *get_var_value(char *s)
 	while (s[i] && s[i] != '=')
 		i++;
 	i++;
-	while (s[i])
-	{
+	while (s[len])
 		len++;
-		i++;
-	}
-	value = malloc(len + 1);
-	if (!value)
-		return (0);
-	i = 0;
-	while (s[i])
-	{
-		value[i] = s[i];
-		i++;
-	}
-	value[i] = '\0';
+	value = ft_substr(s, i, len);
 	return (value);
 }
 
@@ -41,21 +29,12 @@ char *get_var_value(char *s)
 
 char *get_var_name(char *s)
 {
-	int i = 0;
 	int len = 0;
 	char *name;
 
 	while (s[len] && s[len] != '=')
 		len++;
-	name = malloc(len + 1);
-	if (!name)
-		return (0);
-	while (s[i])
-	{
-		name[i] = s[i];
-		i++;
-	}
-	name[i] = '\0';
+	name = ft_substr(s, 0, len);
 	return (name);
 }
 
@@ -75,7 +54,7 @@ void add_node_end(char *str, env_t **root)
 		return;
 	new->str = ft_strdup(str);
 	new->name = get_var_name(str);
-	//new->value = get_var_value(str);
+	new->value = get_var_value(str);
 	new->next = NULL;
 	curr = *root;
 	while (curr->next)
@@ -98,7 +77,7 @@ env_t *set_head(char *str)
 		return (0);
 	p->str = ft_strdup(str);
 	p->name = get_var_name(str);
-	//p->value = get_var_value(str);
+	p->value = get_var_value(str);
 	p->next = NULL;
 	return (p);
 }
@@ -112,21 +91,11 @@ env_t *set_head(char *str)
 void set_env(char **envp, env_t **p)
 {
 	int i = 1;
-	env_t *curr;
 
 	*p = set_head(envp[0]);
 	while (envp[i])
 	{
 		add_node_end(envp[i], p);
 		i++;
-	}
-	printf("------------------\n");
-	curr = *p;
-	while (curr)
-	{
-		printf("env = %s\n", curr->str);
-		printf("env name = %s\n", curr->name);
-		//printf("env value = %s\n", curr->value);
-		curr = curr->next;
 	}
 }

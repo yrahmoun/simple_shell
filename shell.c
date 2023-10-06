@@ -28,6 +28,9 @@ int main(int ac, char **av, char **envp)
 			free_list_env(p);
 			exit(0);
 		}
+		if (n > 0 && input[n - 1] == '\n')
+			input[n - 1] = '\0';
+		check_command(input, p, envp);
 		free(input);
 	}
 	return (0);
