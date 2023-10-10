@@ -1,6 +1,45 @@
 #include "shell.h"
 
 /**
+ * replace_input - replaces a relative path with an absolute one
+ * @str: string holding command
+ * @path: string holding command
+ * Return: absolute path to command
+ */
+
+char *replace_input(char *str, char *path)
+{
+	int len1 = 0;
+	int len2 = 0;
+	int i = 0;
+	int j = 0;
+	char *command;
+
+	while (str[len1])
+		len1++;
+	while (path[len2])
+		len2++;
+	command = malloc(len1 + len2 + 2);
+	if (!command)
+		return (0);
+	while (path[i])
+	{
+		command[i] = path[i];
+		i++;
+	}
+	command[i] = '/';
+	i++;
+	while (str[j])
+	{
+		command[i] = str[j];
+		i++;
+		j++;
+	}
+	command[i] = '\0';
+	return (command);
+}
+
+/**
  * check_exist - check if command exists
  * @str: pointer to command
  * @path: pointer to path values
@@ -15,22 +54,31 @@ char **check_exist(char **str, char **path)
 	if (str[0][0] == '/')
 	{
 		if (access(str[0], X_OK) == 0)
-			return (str);
-	}
-	else
-	{
-		while (path[i])
 		{
-			tmp = str[0];
-			str[0] = join_string("/", str[0]);
-			str[0] = join_string(path[i], str[0]);
-			if (access(str[0], F_OK) == 0)
-				return (str);
-			str[0] = tmp;
-			i++;
+			return (str);
 		}
-		str[0] = ft_strdup("null");
+		else
+		{
+			free(str[0]);
+			str[0] = ft_strdup("null");
+			return (str);
+		}
 	}
+	tmp = ft_strdup(str[0]);
+	free(str[0]);
+	while (path[i])
+	{
+		str[0] = replace_input(tmp, path[i]);
+		if (access(str[0], X_OK) == 0)
+		{
+			free(tmp);
+			return (str);
+		}
+		free(str[0]);
+		i++;
+	}
+	free(tmp);
+	str[0] = ft_strdup("null");
 	return (str);
 }
 
@@ -39,6 +87,7 @@ char **check_exist(char **str, char **path)
  * @str: double pointer holding command to execute
  * @envp: double pointer holding env variables
  * @path: double pointer holding path values
+ * Return: str
  */
 
 char **exec_command(char **str, char **envp, char **path)
@@ -49,18 +98,19 @@ char **exec_command(char **str, char **envp, char **path)
 	str = check_exist(str, path);
 	if (!ft_strcmp(str[0], "null"))
 	{
-		printf("---not found---\n");
+		perror("command not found");
 		return (str);
 	}
 	pid = fork();
-	if (pid < 0)
+	if (pid == -1)
+	{
 		return (str);
+	}
 	if (pid == 0)
 	{
 		if ((execve(str[0], str, envp) == -1))
 		{
 			perror("command not found");
-			exit(-1);
 		}
 	}
 	waitpid(pid, &status, 0);
@@ -100,7 +150,9 @@ void check_command(char *input, env_t *p, char **envp)
 
 	str = split_string(input, ' ');
 	path = set_path(p);
-	str = exec_command(str, envp, path);
+	if (!check_if_builtin(str[0], p))
+		str = exec_command(str, envp, path);
 	str = free_all(str, len_calc(str));
 	path = free_all(path, len_calc(path));
+
 }

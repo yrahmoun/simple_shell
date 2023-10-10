@@ -52,7 +52,7 @@ char **free_all(char **str, int i)
 		i--;
 	}
 	free(str);
-	return (0);
+	return (NULL);
 }
 
 /**

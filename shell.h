@@ -24,6 +24,7 @@ typedef struct env_s
 } env_t;
 
 void print_string(char *s);
+void _putchar(char c);
 void set_env(char **envp, env_t **p);
 char *ft_strdup(char *s);
 void add_node_end(char *str, env_t **root);
@@ -35,5 +36,6 @@ char *join_string(char *s1, char *s2);
 char **split_string(char *s, char c);
 int len_calc(char **s);
 char **free_all(char **str, int i);
+int check_if_builtin(char *s, env_t *p);
 
 #endif

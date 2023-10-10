@@ -2,6 +2,51 @@
 #include <stdio.h>
 
 /**
+ * check_input - check if input isn't spaces only
+ * @s: string holding input
+ * Return: 1 or 0
+ */
+
+int check_input(char *s)
+{
+	int i = 0;
+
+	while (s[i])
+	{
+		if (s[i] > 32)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/**
+ * get_input - gets input without \n
+ * @s: input from getline
+ * Return: new input
+ */
+
+char *get_input(char *s)
+{
+	char *str;
+	int len = 0;
+	int i = 0;
+
+	while (s[len] && s[len] != '\n')
+		len++;
+	str = malloc(len + 1);
+	if (!str)
+		return (0);
+	while (s[i] != '\n')
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+/**
  * main - simple shell program
  * @ac: number of arguments
  * @av: arguments
@@ -12,6 +57,7 @@
 int main(int ac, char **av, char **envp)
 {
 	char *input = NULL;
+	char *input2;
 	size_t len = 0;
 	size_t n = 0;
 	env_t *p;
@@ -26,12 +72,15 @@ int main(int ac, char **av, char **envp)
 		if (n == (size_t)-1)
 		{
 			free_list_env(p);
+			free(input);
 			exit(0);
 		}
-		if (n > 0 && input[n - 1] == '\n')
-			input[n - 1] = '\0';
-		check_command(input, p, envp);
-		free(input);
+		if (check_input(input))
+		{
+			input2 = get_input(input);
+			check_command(input2, p, envp);
+			free(input2);
+		}
 	}
 	return (0);
 }
