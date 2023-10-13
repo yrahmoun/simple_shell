@@ -94,13 +94,17 @@ char **exec_command(char **str, char **envp, char **path)
 {
 	int pid;
 	int status;
+	char *original_command;
 
+	original_command = ft_strdup(str[0]);
 	str = check_exist(str, path);
 	if (!ft_strcmp(str[0], "null"))
 	{
-		perror("command not found");
+		perror(original_command);
+		free(original_command);
 		return (str);
 	}
+	free(original_command);
 	pid = fork();
 	if (pid == -1)
 	{

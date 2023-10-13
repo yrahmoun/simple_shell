@@ -47,6 +47,26 @@ char *get_input(char *s)
 }
 
 /**
+ * check_exit - check if the command is exit
+ * @input: string holding command
+ * Return: 1 or 0
+ */
+
+int check_exit(char *input)
+{
+	char **s;
+
+	s = split_string(input, ' ');
+	if (!ft_strcmp("exit", s[0]))
+	{
+		s = free_all(s, len_calc(s));
+		return (1);
+	}
+	s = free_all(s, len_calc(s));
+	return (0);
+}
+
+/**
  * main - simple shell program
  * @ac: number of arguments
  * @av: arguments
@@ -67,7 +87,8 @@ int main(int ac, char **av, char **envp)
 	set_env(envp, &p);
 	while (1)
 	{
-		write(1, "$ ", 2);
+		if (isatty(0))
+			write(1, "$ ", 2);
 		n = getline(&input, &len, stdin);
 		if (n == (size_t)-1)
 		{
@@ -78,6 +99,13 @@ int main(int ac, char **av, char **envp)
 		if (check_input(input))
 		{
 			input2 = get_input(input);
+			if (check_exit(input2))
+			{
+				free(input2);
+				free(input);
+				free_list_env(p);
+				exit(0);
+			}
 			check_command(input2, p, envp);
 			free(input2);
 		}
