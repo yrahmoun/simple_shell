@@ -94,6 +94,7 @@ int main(int ac, char **av, char **envp)
 		{
 			free_list_env(p);
 			free(input);
+			_putchar('\n');
 			exit(0);
 		}
 		if (check_input(input))
