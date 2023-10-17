@@ -87,10 +87,11 @@ char **check_exist(char **str, char **path)
  * @str: double pointer holding command to execute
  * @envp: double pointer holding env variables
  * @path: double pointer holding path values
+ * @var: pointer to struct
  * Return: str
  */
 
-char **exec_command(char **str, char **envp, char **path)
+char **exec_command(char **str, char **envp, char **path, com_t *var)
 {
 	int pid;
 	int status;
@@ -100,7 +101,7 @@ char **exec_command(char **str, char **envp, char **path)
 	str = check_exist(str, path);
 	if (!ft_strcmp(str[0], "null"))
 	{
-		perror(original_command);
+		print_error(original_command, var);
 		free(original_command);
 		return (str);
 	}
@@ -145,17 +146,18 @@ char **set_path(env_t *p)
  * @input: string holding command
  * @p: pointer to env variable list
  * @envp: string holding env variables
+ * @var: pointer to struct
  */
 
-void check_command(char *input, env_t *p, char **envp)
+void check_command(char *input, env_t *p, char **envp, com_t *var)
 {
 	char **str;
 	char **path;
 
-	str = split_string(input, ' ');
+	str = split_space(input);
 	path = set_path(p);
 	if (!check_if_builtin(str[0], p))
-		str = exec_command(str, envp, path);
+		str = exec_command(str, envp, path, var);
 	str = free_all(str, len_calc(str));
 	path = free_all(path, len_calc(path));
 

@@ -81,9 +81,12 @@ int main(int ac, char **av, char **envp)
 	size_t len = 0;
 	size_t n = 0;
 	env_t *p;
+	com_t var;
 
 	(void)ac;
 	(void)av;
+	var.program_name = av[0];
+	var.command_index = 0;
 	set_env(envp, &p);
 	while (1)
 	{
@@ -94,9 +97,11 @@ int main(int ac, char **av, char **envp)
 		{
 			free_list_env(p);
 			free(input);
-			_putchar('\n');
+			if (isatty(0))
+				_putchar('\n');
 			exit(0);
 		}
+		var.command_index++;
 		if (check_input(input))
 		{
 			input2 = get_input(input);
@@ -107,7 +112,7 @@ int main(int ac, char **av, char **envp)
 				free_list_env(p);
 				exit(0);
 			}
-			check_command(input2, p, envp);
+			check_command(input2, p, envp, &var);
 			free(input2);
 		}
 	}
