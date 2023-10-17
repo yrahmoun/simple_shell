@@ -122,7 +122,7 @@ int main(int ac, char **av, char **envp)
 			input2 = get_input(input);
 			if (check_exit(input2))
 				handle_exit(input, input2, p);
-			check_command(input2, p, envp, &var);
+			check_command(input2, p, &var);
 			free(input2);
 		}
 	}

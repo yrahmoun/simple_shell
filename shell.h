@@ -7,6 +7,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+extern char **environ;
+
 /**
  * struct env_s - linked list containing environment variables
  * @str: string holding a variable
@@ -42,7 +44,7 @@ char *ft_strdup(char *s);
 void add_node_end(char *str, env_t **root);
 void free_list_env(env_t *head);
 char *ft_substr(char *s, int start, int end);
-void check_command(char *input, env_t *p, char **envp, com_t *var);
+void check_command(char *input, env_t *p, com_t *var);
 int ft_strcmp(char *s1, char *s2);
 char *join_string(char *s1, char *s2);
 char **split_string(char *s, char c);
