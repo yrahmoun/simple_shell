@@ -49,27 +49,33 @@ char *replace_input(char *str, char *path)
 char **check_exist(char **str, char **path)
 {
 	int i = 0;
+	int x = 0;
 	char *tmp;
+	struct stat s;
 
-	if (str[0][0] == '/')
+	while (str[0][x])
 	{
-		if (access(str[0], X_OK) == 0)
+		if (str[0][x] == '/')
 		{
-			return (str);
+			if ((stat(str[0], &s) == 0))
+			{
+				return (str);
+			}
+			else
+			{
+				free(str[0]);
+				str[0] = ft_strdup("null");
+				return (str);
+			}
 		}
-		else
-		{
-			free(str[0]);
-			str[0] = ft_strdup("null");
-			return (str);
-		}
+		x++;
 	}
 	tmp = ft_strdup(str[0]);
 	free(str[0]);
 	while (path[i])
 	{
 		str[0] = replace_input(tmp, path[i]);
-		if (access(str[0], X_OK) == 0)
+		if (stat(str[0], &s) == 0)
 		{
 			free(tmp);
 			return (str);
