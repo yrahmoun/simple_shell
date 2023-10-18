@@ -2,9 +2,10 @@
 
 /**
  * print_env - prints the env variables
+ * @var: pointer to struct
  */
 
-void print_env(void)
+void print_env(com_t *var)
 {
 	int i = 0;
 
@@ -14,4 +15,5 @@ void print_env(void)
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
+	var->status = 0;
 }
