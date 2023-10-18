@@ -159,7 +159,9 @@ void check_command(char *input, env_t *p, com_t *var)
 
 	str = split_space(input);
 	path = set_path(p);
-	if (!check_if_builtin(str[0], p))
+	if (!ft_strcmp(str[0], "env"))
+		print_env(p);
+	else
 		str = exec_command(str, path, var);
 	str = free_all(str, len_calc(str));
 	path = free_all(path, len_calc(path));

@@ -58,5 +58,7 @@ char **free_all(char **str, int i);
 int check_if_builtin(char *s, env_t *p);
 char *ft_itoa(int n);
 void print_error(char *name, com_t *var);
+void print_env(env_t *p);
+int ft_strlen(char *s);
 
 #endif
