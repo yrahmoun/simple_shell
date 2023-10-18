@@ -102,6 +102,7 @@ char **exec_command(char **str, char **path, com_t *var)
 	{
 		print_error(original_command, var);
 		free(original_command);
+		var->status = 127;
 		return (str);
 	}
 	free(original_command);
@@ -111,9 +112,11 @@ char **exec_command(char **str, char **path, com_t *var)
 		if ((execve(str[0], str, environ) == -1))
 		{
 			perror(var->program_name);
+			exit(127);
 		}
 	}
 	waitpid(pid, &status, 0);
+	var->status = WEXITSTATUS(status);
 	return (str);
 }
 

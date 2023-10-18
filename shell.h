@@ -29,12 +29,14 @@ typedef struct env_s
  * struct com_s - struct holding variables
  * @program_name: name of the executable
  * @command_index: number of command executed
+ * @status: exit status
  */
 
 typedef struct com_s
 {
 	char *program_name;
 	int command_index;
+	int status;
 } com_t;
 
 void print_string(char *s);

@@ -102,6 +102,7 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	var.program_name = av[0];
 	var.command_index = 0;
+	var.status = 0;
 	set_env(envp, &p);
 	while (1)
 	{
@@ -114,7 +115,7 @@ int main(int ac, char **av, char **envp)
 			free(input);
 			if (isatty(0))
 				_putchar('\n');
-			exit(0);
+			return (var.status);
 		}
 		var.command_index++;
 		if (check_input(input))
