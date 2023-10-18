@@ -1,6 +1,26 @@
 #include "shell.h"
 
 /**
+ * check_env - checks if the command is env
+ * @str: string holding command
+ * Return: 1 or 0
+ */
+
+int check_env(char *str)
+{
+	char **s;
+
+	s = split_space(str);
+	if (!ft_strcmp("env", s[0]))
+	{
+		s = free_all(s, len_calc(s));
+		return (1);
+	}
+	s = free_all(s, len_calc(s));
+	return (0);
+}
+
+/**
  * print_env - prints the env variables
  * @var: pointer to struct
  */

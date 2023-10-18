@@ -60,5 +60,6 @@ char *ft_itoa(int n);
 void print_error(char *name, com_t *var);
 void print_env(com_t *var);
 int ft_strlen(char *s);
+int check_env(char *str);
 
 #endif
