@@ -9,11 +9,13 @@ void print_env(com_t *var)
 {
 	int i = 0;
 
-	while (environ[i])
+	while (environ[i] != NULL)
 	{
 		write(STDOUT_FILENO, environ[i], ft_strlen(environ[i]));
-		write(STDOUT_FILENO, "\n", 1);
+		if (environ[i + 1] != NULL)
+			write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
 	var->status = 0;
+	write(STDOUT_FILENO, "\n", 1);
 }
