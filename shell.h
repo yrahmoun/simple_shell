@@ -61,5 +61,6 @@ void print_error(char *name, com_t *var);
 void print_env(com_t *var);
 int ft_strlen(char *s);
 int check_env(char *str);
+char **check_exist(char **str, char **path);
 
 #endif
