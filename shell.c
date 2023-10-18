@@ -71,14 +71,15 @@ int check_exit(char *input)
  * @input: string holding result of getline
  * @input2: string holding command
  * @p: pointer to linked list
+ * @var: pointer to struct
  */
 
-void handle_exit(char *input, char *input2, env_t *p)
+void handle_exit(char *input, char *input2, env_t *p, com_t *var)
 {
 	free(input2);
 	free(input);
 	free_list_env(p);
-	exit(0);
+	exit(var->status);
 }
 
 /**
@@ -122,7 +123,7 @@ int main(int ac, char **av, char **envp)
 		{
 			input2 = get_input(input);
 			if (check_exit(input2))
-				handle_exit(input, input2, p);
+				handle_exit(input, input2, p, &var);
 			check_command(input2, p, &var);
 			free(input2);
 		}
